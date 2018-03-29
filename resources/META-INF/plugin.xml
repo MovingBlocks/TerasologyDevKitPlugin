@@ -1,11 +1,11 @@
 <idea-plugin>
-  <id>com.lays.terasology</id>
+  <id>com.terasology.plugin</id>
   <name>Terasology Dev Plugin</name>
   <version>1.0</version>
-  <vendor email="laysdra7265@gmail.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <vendor email="laysdra7265@gmail.com" url="https://github.com/laysdra7265/Terasology-Dev-Plugin">LaysDragon</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
+      A plugin for developing Terasology used.
       <em>most HTML tags may be used</em>
     ]]></description>
 
@@ -23,9 +23,11 @@
   <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
   -->
+  <depends>com.intellij.modules.java</depends>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <codeInsight.lineMarkerProvider language="JAVA" implementationClass="org.terasology.plugin.event.EventMarkerProvider"/>
   </extensions>
 
   <actions>
