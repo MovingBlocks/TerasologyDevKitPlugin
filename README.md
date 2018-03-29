@@ -12,3 +12,7 @@ This plugin is build to help developing with Terasology
     - [ ] Consider the entity build with prefab.(Need to search the prefab resource)
 - [ ] Detect incorrect usage 
     - [ ] Add a event receiver to listen a event marked with @ServerEvent on client system
+    
+## Developing
+Need Plugin DevKit (1.0) and Kotlin plugin install and enabled.  
+Than clone the project and simply import into Intellij Idea.
