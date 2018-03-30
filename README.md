@@ -1,4 +1,4 @@
-Terasology Developer Plugin
+Terasology Developer Kit Plugin
 ==
 This plugin is build to help developing with Terasology
 
@@ -39,5 +39,10 @@ This plugin is build to help developing with Terasology
 - [ ] Rebuild project into Gradle version for integration with Jenkins
 
 ## Developing
+### Requirement
+- Intellij idea
+- Plugin DevKit (1.0) Plugin
+- Kotlin Plugin
+- Intellij Community Source SDK `git://git.jetbrains.org/idea/community.git`
 Need Plugin DevKit (1.0) and Kotlin plugin install and enabled.  
 Than clone the project and simply import into Intellij Idea.
