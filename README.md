@@ -38,11 +38,27 @@ This plugin is build to help developing with Terasology
 ### Other
 - [ ] Rebuild project into Gradle version for integration with Jenkins
 
-## Developing
+## Develop
 ### Requirement
-- Intellij idea
-- Plugin DevKit (1.0) Plugin
-- Kotlin Plugin
-- Intellij Community Source SDK `git://git.jetbrains.org/idea/community.git`
-Need Plugin DevKit (1.0) and Kotlin plugin install and enabled.  
-Than clone the project and simply import into Intellij Idea.
+- Kotlin plugin 
+- Intellij Idea
+
+clone and simply import as Gradle Project.
+It will automatic download dependency and resource for a while.  
+
+
+### Debug
+For debug please use the `Plugin Debug` Configuration which will disable ProcessCanceledException.
+
+### Build Plugin
+Run the Gradle Task `BuildPlugin` ,then the plugin artifact will be generated under `build/distributions`
+
+### Plugin SDK Document
+
+
+
+For more detail please see [Official IntelliJ Platform Guide](http://www.jetbrains.org/intellij/sdk/docs/welcome.html)
+and [intellij-sdk-docs](https://github.com/JetBrains/intellij-sdk-docs)
+
+
+
