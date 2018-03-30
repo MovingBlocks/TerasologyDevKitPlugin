@@ -25,20 +25,28 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
             return
         }
 
-
+        //process Event Declarer
         if (element is PsiClass && element.isInheritor(EventUtil.baseEventPsiClass!!,true)/*element.implementsList?.referenceElements?.find { it.resolve() == EventUtil.baseEventPsiClass } != null*/)
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
-                    .setPopupTitle("EventHelper")
-                    .setTooltipText("Found an Event!!")
+                    .setPopupTitle("Event Receiver")
+                    .setTooltipText("Goto Event Receiver")
                     .setTargets(EventUtil.eventsTable[element]?.receiverRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
 
 
-        if(element is PsiMethod && element.annotations.find{it.nameReferenceElement!!.resolve() == EventUtil.receiveEventAnnotationsPsiClass } != null)
+        //process Event Receiver
+        if(element is PsiMethod && element.annotations.find{it.nameReferenceElement!!.resolve() == EventUtil.receiveEventAnnotationsPsiClass } != null) {
             result.add(NavigationGutterIconBuilder.create(LIGHTNING_ICON)
-                    .setPopupTitle("EventHelper")
-                    .setTooltipText("Found an Event!!")
+                    .setPopupTitle("Event Declarer")
+                    .setTooltipText("Goto Event Declarer")
                     .setTargets(element.parseEventReceiverRecord()!!.targetEvent)
                     .createLineMarkerInfo(element.nameIdentifier!!))
+
+            result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
+                    .setPopupTitle("Event Receiver")
+                    .setTooltipText("Goto Other Event Receiver")
+                    .setTargets(EventUtil.eventsTable[element.parseEventReceiverRecord()!!.targetEvent]?.receiverRecords?.map { it.method }?: EmptyList)
+                    .createLineMarkerInfo(element.nameIdentifier!!))
+        }
     }
 }
