@@ -28,23 +28,24 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
         if (element is PsiClass && element.isInheritor(EventUtil.baseEventPsiClass!!,true)/*element.implementsList?.referenceElements?.find { it.resolve() == EventUtil.baseEventPsiClass } != null*/)
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
                     .setPopupTitle("Terasology Event Handler")
-                    .setTooltipText("goto Event Handler")
+                    .setTooltipText("goto ${element.name} Handlers")
                     .setTargets(EventUtil.eventsTable[element]?.handlerRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
 
 
         //process Event Receiver
         if(element is PsiMethod && element.annotations.find{it.nameReferenceElement!!.resolve() == EventUtil.receiveEventAnnotationsPsiClass } != null) {
+            val targetEvent = element.parseEventHandlerRecord()!!.targetEvent
             result.add(NavigationGutterIconBuilder.create(LIGHTNING_ICON)
-                    .setPopupTitle("Terasology Event Declarer")
-                    .setTooltipText("goto Event Declarer")
-                    .setTargets(element.parseEventHandlerRecord()!!.targetEvent)
+                    .setPopupTitle("Terasology Event Declaration")
+                    .setTooltipText("goto ${targetEvent.name} Declaration")
+                    .setTargets(targetEvent)
                     .createLineMarkerInfo(element.nameIdentifier!!))
 
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
                     .setPopupTitle("Terasology Event Handler")
-                    .setTooltipText("goto other Event Handler")
-                    .setTargets(EventUtil.eventsTable[element.parseEventHandlerRecord()!!.targetEvent]?.handlerRecords?.map { it.method }?: EmptyList)
+                    .setTooltipText("check other ${targetEvent.name} Handlers")
+                    .setTargets(EventUtil.eventsTable[targetEvent]?.handlerRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
         }
     }
