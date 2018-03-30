@@ -3,6 +3,10 @@ Terasology Developer Kit Plugin
 This plugin is build to help developing with Terasology
 
 
+![screenshot for EventRelatedItemProvider](image/EventRelatedItemProvider.gif)
+
+
+
 ## ToDo feature
 ### RelatedItemProvider
 - [x] Finding receiver function  
@@ -30,7 +34,7 @@ This plugin is build to help developing with Terasology
 - [ ] Prefab finding existing Component class
 - [ ] Prefab parent finding existing prefab
 
-### Custon icon
+### Custom icon
 - [ ] EventReceiver
 - [ ] EvnetSender
 - [ ] Prefab
