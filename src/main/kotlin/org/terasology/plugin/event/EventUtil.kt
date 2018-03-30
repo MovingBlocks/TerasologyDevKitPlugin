@@ -28,10 +28,10 @@ object EventUtil {
         project.forEachAnnotated(receiveEventAnnotationsPsiClass!!) {
             if(it !is PsiMethod)
                 return@forEachAnnotated
-            val record = it.parseEventReceiverRecord()?:return@forEachAnnotated
+            val record = it.parseEventHandlerRecord()?:return@forEachAnnotated
             if(record.targetEvent !in eventsTable)
                 eventsTable[record.targetEvent] = EventRecord(record.targetEvent)
-            eventsTable[record.targetEvent]!!.receiverRecords.add(record)
+            eventsTable[record.targetEvent]!!.handlerRecords.add(record)
         }
 
 
@@ -42,11 +42,11 @@ object EventUtil {
 
 }
 
-data class EventRecord(val eventClass: PsiClass, val triggererRecords: MutableList<EventTriggererRecord> = mutableListOf(), val receiverRecords: MutableList<EventReceiverRecord> = mutableListOf())
+data class EventRecord(val eventClass: PsiClass, val triggererRecords: MutableList<EventTriggererRecord> = mutableListOf(), val handlerRecords: MutableList<EventHandlerRecord> = mutableListOf())
 
 data class EventTriggererRecord(val triggerer: PsiElement, val components: Set<PsiClass>)
 
-data class EventReceiverRecord(val method: PsiMethod, val targetEvent: PsiClass, val components: Set<PsiClass>)
+data class EventHandlerRecord(val method: PsiMethod, val targetEvent: PsiClass, val components: Set<PsiClass>)
 
 
 fun Project.isValidTerasologyProject() =
@@ -69,7 +69,7 @@ fun Project.forEachAnnotated(clasz:PsiClass,action: (PsiMember) -> Unit) =
                 .forEach(action)
 
 
-fun PsiMethod.parseEventReceiverRecord(): EventReceiverRecord? {
+fun PsiMethod.parseEventHandlerRecord(): EventHandlerRecord? {
     val components = mutableSetOf<PsiClass>()
     var targetEventClass: PsiClass? = null
 
@@ -105,7 +105,7 @@ fun PsiMethod.parseEventReceiverRecord(): EventReceiverRecord? {
     if (targetEventClass == null)
         return null
 
-    return EventReceiverRecord(this, targetEventClass!!, components.toSet())
+    return EventHandlerRecord(this, targetEventClass!!, components.toSet())
 }
 
 inline fun <reified PSI_CLASS : PsiElement> Project.forEachPsiChildren(action: (PSI_CLASS) -> Unit) = FileBasedIndex.getInstance()

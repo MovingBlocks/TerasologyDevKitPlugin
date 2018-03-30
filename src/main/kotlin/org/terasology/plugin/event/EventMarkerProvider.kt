@@ -5,7 +5,6 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.*
-import com.intellij.psi.search.GlobalSearchScope
 
 class EventMarkerProvider: RelatedItemLineMarkerProvider() {
     companion object {
@@ -28,24 +27,24 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
         //process Event Declarer
         if (element is PsiClass && element.isInheritor(EventUtil.baseEventPsiClass!!,true)/*element.implementsList?.referenceElements?.find { it.resolve() == EventUtil.baseEventPsiClass } != null*/)
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
-                    .setPopupTitle("Event Receiver")
-                    .setTooltipText("Goto Event Receiver")
-                    .setTargets(EventUtil.eventsTable[element]?.receiverRecords?.map { it.method }?: EmptyList)
+                    .setPopupTitle("Terasology Event Handler")
+                    .setTooltipText("goto Event Handler")
+                    .setTargets(EventUtil.eventsTable[element]?.handlerRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
 
 
         //process Event Receiver
         if(element is PsiMethod && element.annotations.find{it.nameReferenceElement!!.resolve() == EventUtil.receiveEventAnnotationsPsiClass } != null) {
             result.add(NavigationGutterIconBuilder.create(LIGHTNING_ICON)
-                    .setPopupTitle("Event Declarer")
-                    .setTooltipText("Goto Event Declarer")
-                    .setTargets(element.parseEventReceiverRecord()!!.targetEvent)
+                    .setPopupTitle("Terasology Event Declarer")
+                    .setTooltipText("goto Event Declarer")
+                    .setTargets(element.parseEventHandlerRecord()!!.targetEvent)
                     .createLineMarkerInfo(element.nameIdentifier!!))
 
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
-                    .setPopupTitle("Event Receiver")
-                    .setTooltipText("Goto Other Event Receiver")
-                    .setTargets(EventUtil.eventsTable[element.parseEventReceiverRecord()!!.targetEvent]?.receiverRecords?.map { it.method }?: EmptyList)
+                    .setPopupTitle("Terasology Event Handler")
+                    .setTooltipText("goto other Event Handler")
+                    .setTargets(EventUtil.eventsTable[element.parseEventHandlerRecord()!!.targetEvent]?.handlerRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
         }
     }

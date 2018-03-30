@@ -9,10 +9,10 @@ This plugin is build to help developing with Terasology
 
 ## ToDo feature
 ### RelatedItemProvider
-- [x] Finding receiver function  
-    - [ ] Separately marking possible receiver ,and receiver which will definitely receive the event   
+- [x] Finding handler function  
+    - [ ] Separately marking possible handler ,and handler which will definitely receive the event   
     - [ ] Sorting by priority and mark the non default priority event in related item list
-- [x] Goto event declarer from receiver
+- [x] Goto event declarer from handler
 - [ ] Finding Event possible Sender location  
     - [ ] Entity.send()  
     - [ ] Entity.saveComponent()  
@@ -20,7 +20,7 @@ This plugin is build to help developing with Terasology
 - [ ] The code which create entity via prefab goto prefab file.
 - [ ] Prefab to related Component
 ### Detect incorrect usage 
-- [ ] Add a event receiver to listen a event marked with @ServerEvent on client system
+- [ ] Add a event handler to listen a event marked with @ServerEvent on client system
 - [ ] Prefab that has a nonexisting Component class or invlid name
 - [ ] Invalid event receive method parameter
 ### Template
