@@ -23,6 +23,7 @@ This plugin is build to help developing with Terasology
 - [ ] Add a event handler to listen a event marked with @ServerEvent on client system
 - [ ] Prefab that has a nonexisting Component class or invlid name
 - [ ] Invalid event receive method parameter
+- [ ] An unregistered ComponentSystem
 ### Template
 - [ ] Event
     - [ ] Can select event type (server event ,etc.)
