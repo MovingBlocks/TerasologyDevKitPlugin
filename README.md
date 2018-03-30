@@ -40,7 +40,8 @@ This plugin is build to help developing with Terasology
 - [ ] Prefab
 - [ ] Component
 ### Other
-- [ ] Rebuild project into Gradle version for integration with Jenkins
+- [x] Rebuild project into Gradle version 
+- [ ] Integration with Jenkins
 
 ## Develop
 ### Requirement
