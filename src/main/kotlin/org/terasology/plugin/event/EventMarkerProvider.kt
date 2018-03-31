@@ -33,7 +33,7 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
                     .createLineMarkerInfo(element.nameIdentifier!!))
             result.add(NavigationGutterIconBuilder.create(EXPORT_ICON)
                     .setPopupTitle("Terasology Event Triggerer")
-                    .setTooltipText("check other ${element} Triggerers")
+                    .setTooltipText("goto ${element} Triggerers")
                     .setTargets(EventUtil.eventsTable[element]?.triggererRecords?.map { it.triggerer }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
         }
@@ -51,15 +51,15 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
                     .setPopupTitle("Terasology Event Handler")
                     .setTooltipText("check other ${targetEvent.name} Handlers")
-                    .setTargets(EventUtil.eventsTable[targetEvent]?.handlerRecords?.map { it.method }?: EmptyList)
+                    .setTargets(EventUtil.eventsTable[targetEvent]?.handlerRecords?.map { it.method }?.filter{it != element}?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
             result.add(NavigationGutterIconBuilder.create(EXPORT_ICON)
                     .setPopupTitle("Terasology Event Triggerer")
-                    .setTooltipText("check other ${targetEvent.name} Triggerers")
+                    .setTooltipText("goto ${targetEvent.name} Triggerers")
                     .setTargets(EventUtil.eventsTable[targetEvent]?.triggererRecords?.map { it.triggerer }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
         }
 
-        
+
     }
 }
