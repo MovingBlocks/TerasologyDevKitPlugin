@@ -36,8 +36,9 @@ This plugin is build to help developing with Terasology
 - [ ] Prefab parent finding existing prefab
 
 ### Custom icon
-- [ ] EventReceiver
-- [ ] EvnetSender
+- [ ] Event
+- [ ] EventHandler
+- [ ] EvnetTriggerer
 - [ ] Prefab
 - [ ] Component
 ### Other
