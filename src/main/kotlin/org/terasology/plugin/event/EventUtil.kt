@@ -19,7 +19,7 @@ object EventUtil {
     val eventsTable = HashMap<PsiClass, EventRecord>()
     var receiveEventAnnotationsPsiClass: PsiClass? = null
     var baseEventPsiClass: PsiClass? = null
-    var entityRefPsiClass: PsiClass? = null
+    var entityRefSendPsiMethod: PsiMethod? = null
 
     fun scanProject(project: Project): Boolean {
         if (!project.isValidTerasologyProject())
@@ -28,7 +28,7 @@ object EventUtil {
 
         receiveEventAnnotationsPsiClass = project.getReceiveEventAnnotationsPsiClass()
         baseEventPsiClass = project.getBaseEventPsiClass()
-        entityRefPsiClass = project.findPsiClass("org.terasology.entitySystem.entity.EntityRef")
+        entityRefSendPsiMethod = project.findPsiClass("org.terasology.entitySystem.entity.EntityRef")!!.findMethodsByName("send",false)[0]
 
         project.forEachAnnotated(receiveEventAnnotationsPsiClass!!) {
             if(it !is PsiMethod)
@@ -40,7 +40,7 @@ object EventUtil {
         }
 
 
-        MethodReferencesSearch.search(entityRefPsiClass!!.findMethodsByName("send",false)[0]).forEach {
+        MethodReferencesSearch.search(entityRefSendPsiMethod).forEach {
             if(it !is PsiReferenceExpression)
                 return@forEach
             val event = PsiTypesUtil.getPsiClass((it.parent as PsiMethodCallExpressionImpl).argumentList.expressionTypes[0])!!
