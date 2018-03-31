@@ -3,10 +3,14 @@ package org.terasology.plugin.event
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder
+import com.intellij.ide.util.DefaultPsiElementCellRenderer
+import com.intellij.ide.util.PsiElementListCellRenderer
+import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.util.IconLoader
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.tree.java.PsiMethodCallExpressionImpl
 import com.intellij.psi.util.PsiTypesUtil
+import org.jetbrains.uast.getContainingClass
 
 class EventMarkerProvider : RelatedItemLineMarkerProvider() {
     companion object {
@@ -33,6 +37,7 @@ class EventMarkerProvider : RelatedItemLineMarkerProvider() {
                         .setPopupTitle("Terasology Event Handler")
                         .setTooltipText("goto ${element.name} Handlers")
                         .setTargets(handlersList)
+
                         .createLineMarkerInfo(element.nameIdentifier!!))
 
 
@@ -43,6 +48,7 @@ class EventMarkerProvider : RelatedItemLineMarkerProvider() {
                         .setPopupTitle("Terasology Event Triggerer")
                         .setTooltipText("goto ${element} Triggerers")
                         .setTargets(tirggererslist)
+                        .setCellRenderer(MethodInvokerRender())
                         .createLineMarkerInfo(element.nameIdentifier!!))
         }
 
@@ -72,6 +78,7 @@ class EventMarkerProvider : RelatedItemLineMarkerProvider() {
                         .setPopupTitle("Terasology Event Triggerer")
                         .setTooltipText("goto ${targetEvent.name} Triggerers")
                         .setTargets(tirggererslist)
+                        .setCellRenderer(MethodInvokerRender())
                         .createLineMarkerInfo(element.nameIdentifier!!))
         }
 
@@ -101,4 +108,30 @@ class EventMarkerProvider : RelatedItemLineMarkerProvider() {
         }
 
     }
+}
+
+class MethodInvokerRender : DefaultPsiElementCellRenderer() {
+    override fun getContainerText(element: PsiElement, name: String?): String? {
+        if(element is NavigationItem && element.presentation ==null){
+            val containingClass = element.getContainingClass()
+            if(containingClass !=null) {
+                //val packagepsi = JavaPsiFacade.getInstance(element.project).findPackage(javaFile.getPackageName())
+                val caller = element.findParent<PsiMethod>()
+                return "("+  (if(caller==null)"" else "at ${caller.name}(${caller.parameterList.parameters.map {
+                    it.typeElement!!.innermostComponentReferenceElement?.referenceName?:(it!!.typeElement!!.type as PsiPrimitiveType).name
+                }.joinToString()})") +  " in ${(containingClass.containingFile as PsiJavaFile).packageName}.${containingClass.name})"
+            }
+        }
+        return super.getContainerText(element, name)
+
+
+    }
+}
+
+inline fun <reified P>PsiElement.findParent():P? {
+    var parent = this.parent
+    while(parent !is P && parent != null){
+        parent = parent.parent
+    }
+    return parent as P?
 }
