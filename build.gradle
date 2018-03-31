@@ -49,6 +49,11 @@ patchPluginXml {
 
 runIde{
     if(System.getProperty("debug") !=null){
-        systemProperty("idea.ProcessCanceledException", "disabled")
+        println("debug mode")
+        println("disable idea.ProcessCanceledException")
+        jvmArgs "-Didea.ProcessCanceledException=disabled"
+//        systemProperty("Didea.ProcessCanceledException", "disabled")
+    }else{
+        println("non debug mode")
     }
 }

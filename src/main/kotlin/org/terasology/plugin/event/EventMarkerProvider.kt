@@ -25,12 +25,18 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
         }
 
         //process Event Declarer
-        if (element is PsiClass && element.isInheritor(EventUtil.baseEventPsiClass!!,true)/*element.implementsList?.referenceElements?.find { it.resolve() == EventUtil.baseEventPsiClass } != null*/)
+        if (element is PsiClass && element.isInheritor(EventUtil.baseEventPsiClass!!,true)/*element.implementsList?.referenceElements?.find { it.resolve() == EventUtil.baseEventPsiClass } != null*/) {
             result.add(NavigationGutterIconBuilder.create(IMPORT_ICON)
                     .setPopupTitle("Terasology Event Handler")
                     .setTooltipText("goto ${element.name} Handlers")
                     .setTargets(EventUtil.eventsTable[element]?.handlerRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
+            result.add(NavigationGutterIconBuilder.create(EXPORT_ICON)
+                    .setPopupTitle("Terasology Event Triggerer")
+                    .setTooltipText("check other ${element} Triggerers")
+                    .setTargets(EventUtil.eventsTable[element]?.triggererRecords?.map { it.triggerer }?: EmptyList)
+                    .createLineMarkerInfo(element.nameIdentifier!!))
+        }
 
 
         //process Event Receiver
@@ -47,6 +53,13 @@ class EventMarkerProvider: RelatedItemLineMarkerProvider() {
                     .setTooltipText("check other ${targetEvent.name} Handlers")
                     .setTargets(EventUtil.eventsTable[targetEvent]?.handlerRecords?.map { it.method }?: EmptyList)
                     .createLineMarkerInfo(element.nameIdentifier!!))
+            result.add(NavigationGutterIconBuilder.create(EXPORT_ICON)
+                    .setPopupTitle("Terasology Event Triggerer")
+                    .setTooltipText("check other ${targetEvent.name} Triggerers")
+                    .setTargets(EventUtil.eventsTable[targetEvent]?.triggererRecords?.map { it.triggerer }?: EmptyList)
+                    .createLineMarkerInfo(element.nameIdentifier!!))
         }
+
+        
     }
 }

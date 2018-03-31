@@ -13,8 +13,8 @@ This plugin is build to help developing with Terasology
     - [ ] Separately marking possible handler ,and handler which will definitely receive the event   
     - [ ] Sorting by priority and mark the non default priority event in related item list
 - [x] Goto event declarer from handler
-- [ ] Finding Event possible Sender location  
-    - [ ] Entity.send()  
+- [x] Finding Event possible Sender location  
+    - [x] Entity.send()  
     - [ ] Entity.saveComponent()  
     - [ ] Consider the entity build with prefab.(Need to search the prefab resource)  
 - [ ] The code which create entity via prefab goto prefab file.

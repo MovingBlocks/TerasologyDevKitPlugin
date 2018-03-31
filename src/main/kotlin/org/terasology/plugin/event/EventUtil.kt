@@ -8,14 +8,18 @@ import com.intellij.psi.search.searches.ClassInheritorsSearch
 import com.intellij.psi.search.FileTypeIndex
 import com.intellij.util.indexing.FileBasedIndex
 import com.intellij.psi.*
+import com.intellij.psi.impl.source.tree.java.PsiMethodCallExpressionImpl
 import com.intellij.psi.search.searches.AnnotatedMembersSearch
+import com.intellij.psi.search.searches.MethodReferencesSearch
 import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.util.PsiTypesUtil
 
 
 object EventUtil {
     val eventsTable = HashMap<PsiClass, EventRecord>()
     var receiveEventAnnotationsPsiClass: PsiClass? = null
     var baseEventPsiClass: PsiClass? = null
+    var entityRefPsiClass: PsiClass? = null
 
     fun scanProject(project: Project): Boolean {
         if (!project.isValidTerasologyProject())
@@ -24,6 +28,7 @@ object EventUtil {
 
         receiveEventAnnotationsPsiClass = project.getReceiveEventAnnotationsPsiClass()
         baseEventPsiClass = project.getBaseEventPsiClass()
+        entityRefPsiClass = project.findPsiClass("org.terasology.entitySystem.entity.EntityRef")
 
         project.forEachAnnotated(receiveEventAnnotationsPsiClass!!) {
             if(it !is PsiMethod)
@@ -34,6 +39,15 @@ object EventUtil {
             eventsTable[record.targetEvent]!!.handlerRecords.add(record)
         }
 
+
+        MethodReferencesSearch.search(entityRefPsiClass!!.findMethodsByName("send",false)[0]).forEach {
+            if(it !is PsiReferenceExpression)
+                return@forEach
+            val event = PsiTypesUtil.getPsiClass((it.parent as PsiMethodCallExpressionImpl).argumentList.expressionTypes[0])!!
+            if(event !in eventsTable)
+                eventsTable[event] = EventRecord(event)
+            eventsTable[event]!!.triggererRecords.add(EventTriggererRecord(it, setOf()))
+        }
 
         return true
     }
